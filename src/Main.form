@@ -30,7 +30,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jlbFrom" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
-                      <Component id="tfFrom1" pref="144" max="32767" attributes="0"/>
+                      <Component id="tfFrom" pref="144" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jlbWeight" min="-2" max="-2" attributes="0"/>
@@ -45,18 +45,19 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jlbFrom1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
-                      <Component id="tfFrom2" pref="144" max="32767" attributes="0"/>
+                      <Component id="tfFromFind" pref="144" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jlbTo1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                      <Component id="tfTo1" max="32767" attributes="0"/>
+                      <Component id="tfToFind" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jlbFloyd1" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jlbFloyd" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnAdd" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlbFloyd1" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="btnFind" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -74,7 +75,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jlbFrom" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="tfFrom1" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="tfFrom" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -86,21 +87,23 @@
                   <Component id="jlbWeight" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="tfWeight" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               <Component id="jlbFloyd1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jlbFrom1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="tfFrom2" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="tfFromFind" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jlbTo1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="tfTo1" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="tfToFind" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnFind" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="371" max="32767" attributes="0"/>
+              <EmptySpace pref="332" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -112,6 +115,9 @@
           <Color blue="cc" green="cc" red="0" type="rgb"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jPanel1MouseClicked"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -160,7 +166,7 @@
         <Property name="text" type="java.lang.String" value="Weight"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="tfFrom1">
+    <Component class="javax.swing.JTextField" name="tfFrom">
     </Component>
     <Component class="javax.swing.JTextField" name="tfWeight">
     </Component>
@@ -172,9 +178,9 @@
         <Property name="text" type="java.lang.String" value="FLOYD ALGORITHM"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="tfFrom2">
+    <Component class="javax.swing.JTextField" name="tfFromFind">
     </Component>
-    <Component class="javax.swing.JTextField" name="tfTo1">
+    <Component class="javax.swing.JTextField" name="tfToFind">
     </Component>
     <Component class="javax.swing.JLabel" name="jlbTo1">
       <Properties>
@@ -199,6 +205,20 @@
         </Property>
         <Property name="text" type="java.lang.String" value="FIND"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFindActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnAdd">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="0" red="33" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="ADD"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
