@@ -12,15 +12,20 @@ import java.util.PriorityQueue;
  * @author Thaycacac
  */
 public class Main extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Main
-     */
+    
+    String[] stationList = {"Trung Giã", "SB Nội Bài", "Mê Linh", "Hải Bối",
+        "Vĩnh Ngọc", "Tây Tựu", "Niên Hà", "Phú Minh", "Phú Diễn", "Hoài Đức",
+        "Phương Canh", "ĐH Quốc Gia", "Văn Cao", "Yên Thường", "Vành đai 3",
+        "Chùa Hà", "Kim Mã", "Tây Mỗ", "Dương Nội", "Trần Duy Hưng", "Cát Linh",
+        "TTHN Quốc Gia", "La Khê", "Ga Hà Nội", "Gia Lâm", "Chương Mỹ",
+        "Yên Nghĩa", "Hà Đông", "Thượng Đình", "Kim Liên", "Pháp Vân",
+        "Ga Ngọc Hồi", "Dương Xá", "Nhổn"};
+    
     int V, INF;
     ArrayList<Pair> vertexList;
     ArrayList<ArrayList<Pair>> adjList;
     ArrayList<Pair> station;
-
+    
     public Main() {
         initComponents();
         V = 0;
@@ -29,11 +34,47 @@ public class Main extends javax.swing.JFrame {
         adjList = new ArrayList<ArrayList<Pair>>();
         station = new ArrayList<Pair>();
     }
-
-    public void initMap() {
-        insertStation(553, 327);
+    
+    public void initState() {
+        insertStation(779, 45, stationList[0]);
+        insertStation(630, 65, stationList[1]);
+        insertStation(523, 121, stationList[2]);
+        insertStation(694, 117, stationList[3]);
+        insertStation(741, 153, stationList[4]);
+        insertStation(354, 194, stationList[5]);
+        insertStation(832, 213, stationList[6]);
+        insertStation(420, 257, stationList[7]);
+        insertStation(471, 275, stationList[8]);
+        insertStation(214, 318, stationList[9]);
+        insertStation(361, 354, stationList[10]);
+        insertStation(515, 333, stationList[11]);
+        insertStation(649, 340, stationList[12]);
+        insertStation(997, 317, stationList[13]);
+        insertStation(410, 393, stationList[14]);
+        insertStation(576, 375, stationList[15]);
+        insertStation(662, 385, stationList[16]);
+        insertStation(283, 506, stationList[17]);
+        insertStation(432, 471, stationList[18]);
+        insertStation(502, 466, stationList[19]);
+        insertStation(708, 434, stationList[20]);
+        insertStation(471, 489, stationList[21]);
+        insertStation(535, 496, stationList[22]);
+        insertStation(814, 486, stationList[23]);
+        insertStation(997, 460, stationList[24]);
+        insertStation(213, 628, stationList[25]);
+        insertStation(315, 604, stationList[26]);
+        insertStation(427, 571, stationList[27]);
+        insertStation(491, 531, stationList[28]);
+        insertStation(676, 541, stationList[29]);
+        insertStation(715, 585, stationList[30]);
+        insertStation(656, 639, stationList[31]);
+        insertStation(959, 620, stationList[32]);
     }
-
+    
+    public void initMap() {
+        
+    }
+    
     public void shortestPath(int formFind, int toFind) {
         Graphics g = getGraphics();
         int width = 15, height = 15;
@@ -48,9 +89,9 @@ public class Main extends javax.swing.JFrame {
             g.setColor(Color.BLACK);
             g.drawOval(x, y, width, height);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
-            g.drawString((new Integer(i)).toString(), x - 15, y + 20);
+            g.drawString((new Integer(i)).toString(), x - 10, y + 25);
         }
-
+        
         int[] dist = new int[V];
         int[] parent = new int[V];
         boolean[] doneWith = new boolean[V];
@@ -60,12 +101,12 @@ public class Main extends javax.swing.JFrame {
             parent[i] = -1;
         }
         dist[formFind] = 0;
-
+        
         Comparator<Pair> comparator = new MyComparator();
         PriorityQueue<Pair> q = new PriorityQueue<Pair>(comparator);
-
+        
         q.add(new Pair(0, formFind));
-
+        
         while (q.size() != 0) {
             Pair p = q.poll();
             int u = p.gety();
@@ -88,7 +129,7 @@ public class Main extends javax.swing.JFrame {
         printParentEdges(toFind, parent);
         printParent(toFind, parent);
     }
-
+    
     public void invertNode(int vertex) {
         Pair p = vertexList.get(vertex);
         int x = p.getx();
@@ -96,14 +137,14 @@ public class Main extends javax.swing.JFrame {
         int width = 15, height = 15;
         Graphics g = getGraphics();
         g.setColor(Color.BLACK);
-        g.fillOval(x, y , width, height);
+        g.fillOval(x, y, width, height);
         g.setColor(Color.BLUE);
-        g.drawOval(x, y , width, height);
+        g.drawOval(x, y, width, height);
         g.setColor(Color.WHITE);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
         g.drawString((new Integer(vertex)).toString(), x - 15, y + 20);
     }
-
+    
     public void invertEdge(int vertex, int par) {
         int width = 15, height = 15;
         Graphics g = getGraphics();
@@ -116,7 +157,7 @@ public class Main extends javax.swing.JFrame {
         int y1 = p1.gety();
         g.drawLine(x + width / 2, y + height / 2, x1 + width / 2, y1 + width / 2);
     }
-
+    
     public void printParentEdges(int vertex, int[] parent) {
         if (parent[vertex] == -1) {
             return;
@@ -124,7 +165,7 @@ public class Main extends javax.swing.JFrame {
         printParentEdges(parent[vertex], parent);
         invertEdge(vertex, parent[vertex]);
     }
-
+    
     public void printParent(int vertex, int[] parent) {
         if (parent[vertex] == -1) {
             invertNode(vertex);
@@ -133,7 +174,64 @@ public class Main extends javax.swing.JFrame {
         printParent(parent[vertex], parent);
         invertNode(vertex);
     }
+    
+    public void insertStation(int x, int y, String stationName) {
+        adjList.add(new ArrayList<Pair>());
+        Integer i = new Integer(V);
+        vertexList.add(new Pair(x, y));
+        int width = 15, height = 15;
+        String text = i.toString();
+        Graphics g = getGraphics();
+        g.setColor(Color.YELLOW);
+        g.fillOval(x, y, width, height);
+        g.setColor(Color.BLACK);
+        g.drawOval(x, y, width, height);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+        //set text and index
+        g.drawString(stationName, x - 10, y + 25);
+        V++;
+    }
+    
+    void insertWeight(int from, int to, int weight) {
+        //check weight valid or not
+        if (weight < 0 || to > vertexList.size()
+                || from > vertexList.size() || to < 0 || from < 0) {
+            tfFrom.setText("INVALID");
+            tfTo.setText("INVALID");
+            tfWeight.setText("INVALID");
+            return;
+        }
+        int width = 15, height = 15;
+        tfFrom.setText("");
+        tfTo.setText("");
+        tfWeight.setText("");
+        int x1 = vertexList.get(from).getx();
+        int y1 = vertexList.get(from).gety();
+        int x2 = vertexList.get(to).getx();
+        int y2 = vertexList.get(to).gety();
+        Graphics g = getGraphics();
+        int midx = (x1 + x2) / 2;
+        int midy = (y1 + y2) / 2;
 
+        //draw line
+        g.drawLine(x1 + width / 2, y1 + height / 2, x2 + width / 2, y2 + width / 2);
+
+        //draw node 1
+        g.setColor(Color.YELLOW);
+        g.fillOval(x1, y1, width, height);
+        g.setColor(Color.BLACK);
+        g.drawOval(x1, y1, width, height);
+        //draw node 2
+        g.setColor(Color.YELLOW);
+        g.fillOval(x2, y2, width, height);
+        g.setColor(Color.BLACK);
+        g.drawOval(x2, y2, width, height);
+        //draw weight
+        g.drawString(new Integer(weight).toString(), midx - 5, midy);
+        adjList.get(from).add(new Pair(to, weight));
+        adjList.get(to).add(new Pair(from, weight));
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -154,6 +252,7 @@ public class Main extends javax.swing.JFrame {
         btnFind = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
         btnDisplay = new javax.swing.JButton();
+        btnFind2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -225,6 +324,13 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        btnFind2.setText("Find2");
+        btnFind2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFind2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -260,7 +366,8 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jlbFloyd1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnFind, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnDisplay, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(btnDisplay, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnFind2, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -297,7 +404,9 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(btnFind)
                 .addGap(18, 18, 18)
                 .addComponent(btnDisplay)
-                .addContainerGap(291, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnFind2)
+                .addContainerGap(257, Short.MAX_VALUE))
         );
 
         pack();
@@ -306,13 +415,13 @@ public class Main extends javax.swing.JFrame {
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
         //add to adj list
         adjList.add(new ArrayList<Pair>());
-
+        
         Integer i = new Integer(V);
         int x = evt.getX();
         int y = evt.getY();
         System.out.println(x);
         System.out.println(y);
-
+        
         vertexList.add(new Pair(x, y));
         int width = 15, height = 15;
         String text = i.toString();
@@ -326,24 +435,6 @@ public class Main extends javax.swing.JFrame {
         g.drawString(text, x - 15, y + 20);
         V++;
     }//GEN-LAST:event_jPanel1MouseClicked
-
-    void insertStation(int x, int y) {
-        adjList.add(new ArrayList<Pair>());
-        Integer i = new Integer(V);
-        vertexList.add(new Pair(x, y));
-        int width = 15, height = 15;
-        String text = i.toString();
-        Graphics g = getGraphics();
-        g.setColor(Color.YELLOW);
-        g.fillOval(x, y, width, height);
-        g.setColor(Color.BLACK);
-        g.drawOval(x, y, width, height);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
-        //set text and index
-        g.drawString(text, x - 15, y + 20);
-        V++;
-    }
-//    insertStation(553, 327);
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         //get value
@@ -405,8 +496,13 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFindActionPerformed
 
     private void btnDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayActionPerformed
+        initState();
         initMap();
     }//GEN-LAST:event_btnDisplayActionPerformed
+
+    private void btnFind2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFind2ActionPerformed
+        shortestPath(0, 3);
+    }//GEN-LAST:event_btnFind2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -442,27 +538,27 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
-
+    
     class Pair {
-
+        
         int x, y;
-
+        
         public Pair(int x, int y) {
             this.x = x;
             this.y = y;
         }
-
+        
         public int getx() {
             return x;
         }
-
+        
         public int gety() {
             return y;
         }
     }
-
+    
     class MyComparator implements Comparator<Pair> {
-
+        
         public int compare(Pair a, Pair b) {
             return (new Integer(a.getx())).compareTo(new Integer(b.getx()));
         }
@@ -472,6 +568,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDisplay;
     private javax.swing.JButton btnFind;
+    private javax.swing.JButton btnFind2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel jlbFloyd;
     private javax.swing.JLabel jlbFloyd1;

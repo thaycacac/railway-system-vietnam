@@ -60,6 +60,7 @@
                           <Component id="jlbFloyd1" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="btnFind" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="btnDisplay" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnFind2" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -106,7 +107,9 @@
               <Component id="btnFind" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnDisplay" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="291" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="btnFind2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="257" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -238,6 +241,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDisplayActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnFind2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Find2"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFind2ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
