@@ -16,122 +16,124 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
-    int V,INF;
-	ArrayList<Pair> vertexMapping;
-	ArrayList<ArrayList<Pair> > adjList;
-	ArrayList<Pair> l;
+    int V, INF;
+    ArrayList<Pair> vertexList;
+    ArrayList<ArrayList<Pair>> adjList;
+    ArrayList<Pair> station;
+
     public Main() {
         initComponents();
         V = 0;
         INF = 9999999;
-	vertexMapping = new  ArrayList<Pair>();
-	adjList = new ArrayList<ArrayList<Pair> >();
-	l = new ArrayList<Pair>();
+        vertexList = new ArrayList<Pair>();
+        adjList = new ArrayList<ArrayList<Pair>>();
+        station = new ArrayList<Pair>();
     }
-    
-    public void shortestPath(int src,int sink){
-		Graphics g= getGraphics();
-		int width = 50,height=50;
-		int i=0;
-		while(i<adjList.size()){
-			Iterator itr = adjList.get(i).iterator();
-			Pair pcor = vertexMapping.get(i);
-			int x = pcor.getx();
-			int y = pcor.gety();
-			while(itr.hasNext()){
-				Pair p = (Pair)itr.next();
-				Pair pcor1 = vertexMapping.get(p.getx());
-				int x1 = pcor1.getx();
-				int y1 = pcor1.gety();
-				g.drawLine(x,y,x1,y1);
-			}
-			i++;
-		}
-		for(i=0;i<vertexMapping.size();i++){
-			Pair p = vertexMapping.get(i);
-			int x = p.getx();
-			int y = p.gety();
-			g.setColor(new Color(190,255,190));
-			g.fillOval(x-width/2,y-height/2,width,height);
-			g.setColor(Color.BLACK);
-			g.drawOval(x-width/2,y-height/2,width,height);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-			g.drawString((new Integer(i)).toString(),x-5,y+5);
-		}
-		int[] dist = new int[V];
-		int[] parent = new int[V];
-		boolean[] doneWith = new boolean[V];
-		for(i=0;i<V;i++){
-			dist[i] = INF;
-			doneWith[i] = false;
-			parent[i]=-1;
-		}
-		dist[src]=0;
-		Comparator<Pair> comparator = new MyComparator();
-		PriorityQueue <Pair>  q = new PriorityQueue <Pair> (comparator); 
-		q.add(new Pair(0,src));
-		while(q.size()!=0){
-			Pair p = q.poll();
-			int u = p.gety();
-			if(doneWith[u])
-				continue;
-			doneWith[u] = true;
-			Iterator itr = adjList.get(u).iterator();
-			while(itr.hasNext()){
-				Pair pr = (Pair)itr.next();
-				int v = pr.getx();
-				int weight = pr.gety();
-				if(!doneWith[v] && dist[v]>dist[u]+weight){
-					dist[v] = dist[u]+weight;
-					parent[v]=u;
-					q.add(new Pair(dist[v],v));
-				}
-			}
-		}
-		printParentEdges(sink,parent);
-		printParent(sink,parent);
-	}
-    public void invertNode(int vertex){
-		Pair p = vertexMapping.get(vertex);
-		int x = p.getx();
-		int y = p.gety();	
-		int width =50,height=50;
-		Graphics g= getGraphics();
-		g.setColor(Color.BLACK);
-		g.fillOval(x-width/2,y-height/2,width,height);
-		g.setColor(Color.RED);
-		g.drawOval(x-width/2,y-height/2,width,height);
-		g.setColor(Color.WHITE);
-		g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-		g.drawString((new Integer(vertex)).toString(),x-5,y+5);		
-	}
-	public void invertEdge(int vertex,int par){
-		Graphics g= getGraphics();
-		Pair p = vertexMapping.get(vertex);
-		int x = p.getx();
-		int y = p.gety();
-		g.setColor(Color.RED);
-		Pair p1 = vertexMapping.get(par);
-		int x1 = p1.getx();
-		int y1 = p1.gety();
-		g.drawLine(x,y,x1,y1);
-	}
-	public void printParentEdges(int vertex,int[] parent){
-		if(parent[vertex]==-1){
-			return;
-		}
-		printParentEdges(parent[vertex],parent);
-		invertEdge(vertex,parent[vertex]);		
-	}
-	public void printParent(int vertex,int[] parent){
-		if(parent[vertex]==-1){
-			invertNode(vertex);
-			return;
-		}
-		printParent(parent[vertex],parent);
-		invertNode(vertex);		
-	}
-    
+
+    public void initMap() {
+        insertStation(553, 327);
+    }
+
+    public void shortestPath(int formFind, int toFind) {
+        Graphics g = getGraphics();
+        int width = 15, height = 15;
+        int i = 0;
+        //draw station visited
+        for (i = 0; i < vertexList.size(); i++) {
+            Pair p = vertexList.get(i);
+            int x = p.getx();
+            int y = p.gety();
+            g.setColor(Color.YELLOW);
+            g.fillOval(x, y, width, height);
+            g.setColor(Color.BLACK);
+            g.drawOval(x, y, width, height);
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+            g.drawString((new Integer(i)).toString(), x - 15, y + 20);
+        }
+
+        int[] dist = new int[V];
+        int[] parent = new int[V];
+        boolean[] doneWith = new boolean[V];
+        for (i = 0; i < V; i++) {
+            dist[i] = INF;
+            doneWith[i] = false;
+            parent[i] = -1;
+        }
+        dist[formFind] = 0;
+
+        Comparator<Pair> comparator = new MyComparator();
+        PriorityQueue<Pair> q = new PriorityQueue<Pair>(comparator);
+
+        q.add(new Pair(0, formFind));
+
+        while (q.size() != 0) {
+            Pair p = q.poll();
+            int u = p.gety();
+            if (doneWith[u]) {
+                continue;
+            }
+            doneWith[u] = true;
+            Iterator itr = adjList.get(u).iterator();
+            while (itr.hasNext()) {
+                Pair pr = (Pair) itr.next();
+                int v = pr.getx();
+                int weight = pr.gety();
+                if (!doneWith[v] && dist[v] > dist[u] + weight) {
+                    dist[v] = dist[u] + weight;
+                    parent[v] = u;
+                    q.add(new Pair(dist[v], v));
+                }
+            }
+        }
+        printParentEdges(toFind, parent);
+        printParent(toFind, parent);
+    }
+
+    public void invertNode(int vertex) {
+        Pair p = vertexList.get(vertex);
+        int x = p.getx();
+        int y = p.gety();
+        int width = 15, height = 15;
+        Graphics g = getGraphics();
+        g.setColor(Color.BLACK);
+        g.fillOval(x, y , width, height);
+        g.setColor(Color.BLUE);
+        g.drawOval(x, y , width, height);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+        g.drawString((new Integer(vertex)).toString(), x - 15, y + 20);
+    }
+
+    public void invertEdge(int vertex, int par) {
+        int width = 15, height = 15;
+        Graphics g = getGraphics();
+        Pair p = vertexList.get(vertex);
+        int x = p.getx();
+        int y = p.gety();
+        g.setColor(Color.RED);
+        Pair p1 = vertexList.get(par);
+        int x1 = p1.getx();
+        int y1 = p1.gety();
+        g.drawLine(x + width / 2, y + height / 2, x1 + width / 2, y1 + width / 2);
+    }
+
+    public void printParentEdges(int vertex, int[] parent) {
+        if (parent[vertex] == -1) {
+            return;
+        }
+        printParentEdges(parent[vertex], parent);
+        invertEdge(vertex, parent[vertex]);
+    }
+
+    public void printParent(int vertex, int[] parent) {
+        if (parent[vertex] == -1) {
+            invertNode(vertex);
+            return;
+        }
+        printParent(parent[vertex], parent);
+        invertNode(vertex);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -151,6 +153,7 @@ public class Main extends javax.swing.JFrame {
         jlbFrom1 = new javax.swing.JLabel();
         btnFind = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
+        btnDisplay = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -181,8 +184,14 @@ public class Main extends javax.swing.JFrame {
         jlbTo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jlbTo.setText("To");
 
+        tfTo.setText("1");
+
         jlbWeight.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jlbWeight.setText("Weight");
+
+        tfFrom.setText("0");
+
+        tfWeight.setText("12");
 
         jlbFloyd1.setForeground(new java.awt.Color(0, 0, 255));
         jlbFloyd1.setText("FLOYD ALGORITHM");
@@ -206,6 +215,13 @@ public class Main extends javax.swing.JFrame {
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
+            }
+        });
+
+        btnDisplay.setText("Display");
+        btnDisplay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDisplayActionPerformed(evt);
             }
         });
 
@@ -243,7 +259,8 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(jlbFloyd, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jlbFloyd1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnFind, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(btnFind, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnDisplay, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -278,79 +295,118 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(tfToFind, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnFind)
-                .addContainerGap(332, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnDisplay)
+                .addContainerGap(291, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        //add to adj list
+        adjList.add(new ArrayList<Pair>());
 
-		adjList.add(new ArrayList<Pair>());
-		Integer i = new Integer(V);
-		int x = evt.getX();
-		int y = evt.getY();
-		vertexMapping.add(new Pair(x,y));
-		int width =50,height=50;
-		String text = i.toString();
-		Graphics g= getGraphics();
-		g.setColor(new Color(190,255,190));
-		g.fillOval(x-width/2,y-height/2,width,height);
-		g.setColor(Color.BLACK);
-		g.drawOval(x-width/2,y-height/2,width,height);
-		g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-		g.drawString(text,x-5,y+5);
-		V++;
+        Integer i = new Integer(V);
+        int x = evt.getX();
+        int y = evt.getY();
+        System.out.println(x);
+        System.out.println(y);
+
+        vertexList.add(new Pair(x, y));
+        int width = 15, height = 15;
+        String text = i.toString();
+        Graphics g = getGraphics();
+        g.setColor(Color.YELLOW);
+        g.fillOval(x, y, width, height);
+        g.setColor(Color.BLACK);
+        g.drawOval(x, y, width, height);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+        //set text and index
+        g.drawString(text, x - 15, y + 20);
+        V++;
     }//GEN-LAST:event_jPanel1MouseClicked
 
+    void insertStation(int x, int y) {
+        adjList.add(new ArrayList<Pair>());
+        Integer i = new Integer(V);
+        vertexList.add(new Pair(x, y));
+        int width = 15, height = 15;
+        String text = i.toString();
+        Graphics g = getGraphics();
+        g.setColor(Color.YELLOW);
+        g.fillOval(x, y, width, height);
+        g.setColor(Color.BLACK);
+        g.drawOval(x, y, width, height);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+        //set text and index
+        g.drawString(text, x - 15, y + 20);
+        V++;
+    }
+//    insertStation(553, 327);
+
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-                        int from = Integer.valueOf(tfFrom.getText());
-			int to = Integer.valueOf(tfTo.getText());
-			int weight = Integer.valueOf(tfWeight.getText());
-			if(weight<0 || to>vertexMapping.size() || from>vertexMapping.size() || to<0 || from<0){
-				tfFrom.setText("INVALID");
-				tfTo.setText("INVALID");
-				tfWeight.setText("INVALID");
-				return;
-			}
-			tfFrom.setText("");
-			tfTo.setText("");
-			tfWeight.setText("");
-			int x1 = vertexMapping.get(from).getx();
-			int y1 = vertexMapping.get(from).gety();
-			int x2 = vertexMapping.get(to).getx();
-			int y2 = vertexMapping.get(to).gety();
-			Graphics g= getGraphics();	
-			int midx = (x1+x2)/2;
-			int midy = (y1+y2)/2;
-			g.drawLine(x1,y1,x2,y2);
-			g.setColor(new Color(190,255,190));
-			g.fillOval(x1-50/2,y1-50/2,50,50);
-			g.setColor(Color.BLACK);
-			g.drawOval(x1-50/2,y1-50/2,50,50);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-			g.drawString(new Integer(from).toString(),x1-5,y1+5);
-			g.setColor(new Color(190,255,190));
-			g.fillOval(x2-50/2,y2-50/2,50,50);
-			g.setColor(Color.BLACK);
-			g.drawOval(x2-50/2,y2-50/2,50,50);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-			g.drawString(new Integer(to).toString(),x2-5,y2+5);	
-			g.drawString(new Integer(weight).toString(),midx-5,midy+5);
-			adjList.get(from).add(new Pair(to,weight));
-			adjList.get(to).add(new Pair(from,weight));
+        //get value
+        int from = Integer.valueOf(tfFrom.getText());
+        int to = Integer.valueOf(tfTo.getText());
+        int weight = Integer.valueOf(tfWeight.getText());
+        //check weight valid or not
+        if (weight < 0 || to > vertexList.size()
+                || from > vertexList.size() || to < 0 || from < 0) {
+            tfFrom.setText("INVALID");
+            tfTo.setText("INVALID");
+            tfWeight.setText("INVALID");
+            return;
+        }
+        int width = 15, height = 15;
+        tfFrom.setText("");
+        tfTo.setText("");
+        tfWeight.setText("");
+        int x1 = vertexList.get(from).getx();
+        int y1 = vertexList.get(from).gety();
+        int x2 = vertexList.get(to).getx();
+        int y2 = vertexList.get(to).gety();
+        Graphics g = getGraphics();
+        int midx = (x1 + x2) / 2;
+        int midy = (y1 + y2) / 2;
+
+        //draw line
+        g.drawLine(x1 + width / 2, y1 + height / 2, x2 + width / 2, y2 + width / 2);
+
+        //draw node 1
+        g.setColor(Color.YELLOW);
+        g.fillOval(x1, y1, width, height);
+        g.setColor(Color.BLACK);
+        g.drawOval(x1, y1, width, height);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+        g.drawString(new Integer(from).toString(), x1 - 15, y1 + 20);
+        //draw node 2
+        g.setColor(Color.YELLOW);
+        g.fillOval(x2, y2, width, height);
+        g.setColor(Color.BLACK);
+        g.drawOval(x2, y2, width, height);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+        g.drawString(new Integer(to).toString(), x2 - 15, y2 + 20);
+        //draw weight
+        g.drawString(new Integer(weight).toString(), midx - 5, midy);
+        adjList.get(from).add(new Pair(to, weight));
+        adjList.get(to).add(new Pair(from, weight));
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
-                        int fromFind = Integer.valueOf(tfFromFind.getText());
-			int toFind = Integer.valueOf(tfToFind.getText());
-                        //check input find valid or not
-			if(fromFind<0 || fromFind>V || toFind<0 || toFind>V){
-				tfFromFind.setText("INVALID");
-				tfToFind.setText("INVALID");
-			}
-			shortestPath(fromFind,toFind);
+        int fromFind = Integer.valueOf(tfFromFind.getText());
+        int toFind = Integer.valueOf(tfToFind.getText());
+        //check input find valid or not
+        if (fromFind < 0 || fromFind > V || toFind < 0 || toFind > V) {
+            tfFromFind.setText("INVALID");
+            tfToFind.setText("INVALID");
+        }
+        shortestPath(fromFind, toFind);
     }//GEN-LAST:event_btnFindActionPerformed
+
+    private void btnDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayActionPerformed
+        initMap();
+    }//GEN-LAST:event_btnDisplayActionPerformed
 
     /**
      * @param args the command line arguments
@@ -386,29 +442,35 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
-    
-    class Pair{
-	int x,y;
-	public Pair(int x,int y){
-		this.x = x;
-		this.y = y;
-	}
-	public int getx(){
-		return x;
-	}
-	public int gety(){
-		return y;
-	}
-}
-    
-    class MyComparator implements Comparator<Pair> {
-    public int compare(Pair a, Pair b) {
-		return (new Integer(a.getx())).compareTo(new Integer(b.getx()));
+
+    class Pair {
+
+        int x, y;
+
+        public Pair(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getx() {
+            return x;
+        }
+
+        public int gety() {
+            return y;
+        }
     }
-}
+
+    class MyComparator implements Comparator<Pair> {
+
+        public int compare(Pair a, Pair b) {
+            return (new Integer(a.getx())).compareTo(new Integer(b.getx()));
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDisplay;
     private javax.swing.JButton btnFind;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel jlbFloyd;
