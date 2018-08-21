@@ -4,7 +4,7 @@ Assignment Data structure algorithm
 
 ### **Data**
 > CuongNX
-![Image](C:\Users\Thaycacac\Desktop/medley/resources/r1hhZjYLm_HyimXiKL7.PNG)
+![Image](https://raw.githubusercontent.com/thaycacac/railway-system-vietnam/master/1.PNG)
 
 ### **Running the tests**
 Run file
@@ -13,4 +13,5 @@ Run file
 Home.java
 ```
 
-![Image](C:\Users\Thaycacac\Desktop/medley/resources/r1hhZjYLm_S1M6QiKUm.PNG)
+![Image](https://raw.githubusercontent.com/thaycacac/railway-system-vietnam/master/2.PNG)
+![Image](https://raw.githubusercontent.com/thaycacac/railway-system-vietnam/master/3.PNG)
